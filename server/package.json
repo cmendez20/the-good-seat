@@ -1,0 +1,32 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "tsx dist/index.js",
+    "dev": "tsx watch --env-file=.env src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@hono/node-server": "^1.14.4",
+    "bcryptjs": "^3.0.2",
+    "better-sqlite3": "^11.10.0",
+    "dotenv": "^16.5.0",
+    "drizzle-orm": "^0.44.2",
+    "hono": "^4.7.11",
+    "jsonwebtoken": "^9.0.2",
+    "zod": "^3.25.56"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/node": "^22.15.30",
+    "drizzle-kit": "^0.31.1",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3"
+  }
+}
