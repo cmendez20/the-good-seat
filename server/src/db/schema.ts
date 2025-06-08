@@ -50,7 +50,6 @@ export const theaters = sqliteTable("theaters", {
       return sqids.encode([randomNum]); // Encode a single number into a Sqids string
     }),
   name: text("name").notNull(), // e.g., "AMC Metreon 16"
-  address: text("address").notNull(),
   city: text("city").notNull(),
   state: text("state").notNull(),
   country: text("country").notNull(),
@@ -81,10 +80,10 @@ export const screens = sqliteTable("screens", {
     .references(() => theaters.id, { onDelete: "cascade" }), // Link to theaters table
   name: text("name").notNull(), // e.g., "Auditorium 7", "IMAX with Laser"
   screenType: text("screen_type", {
-    enum: ["Standard", "IMAX", "Dolby", "RPX"],
+    enum: ["Digital", "Laser", "Dolby", "IMAX"],
   })
     .notNull()
-    .default("Standard"),
+    .default("Laser"),
 });
 
 export const screensRelations = relations(screens, ({ one, many }) => ({
