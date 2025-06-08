@@ -1,6 +1,8 @@
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
+import { db } from "./db/index.js";
+import * as schema from "./db/schema.js";
 
 const app = new Hono();
 
@@ -24,9 +26,15 @@ app.get("/", c => {
   return c.text("Hono API is running!");
 });
 
-// Example API endpoint (you'll replace this with real routes)
-app.get("/api/hello", c => {
-  return c.json({ message: "Hello from Hono API!" });
+app.get("/api/screens", async c => {
+  const screens = await db
+    .select({
+      name: schema.screens.name,
+      screenType: schema.screens.screenType,
+    })
+    .from(schema.screens);
+
+  return c.json(screens);
 });
 
 // --- Start the Server ---
