@@ -1,4 +1,3 @@
-// client/src/queries/useScreens.ts
 import { useQuery } from "@tanstack/react-query";
 import { getScreens } from "../api";
 

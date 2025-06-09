@@ -1,5 +1,5 @@
 // client/src/pages/ScreensListPage.tsx
-import { useScreens } from "~/services/queries/useScreen";
+import { useScreens } from "~/services/queries/useScreens";
 
 export default function ScreensListPage() {
   // Use our custom hook to fetch data

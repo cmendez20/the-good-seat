@@ -12,6 +12,10 @@ import "./app.css";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
+export function HydrateFallback() {
+  return <div>Loading Theatre Details...</div>;
+}
+
 // Create a client
 const queryClient = new QueryClient();
 
