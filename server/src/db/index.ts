@@ -37,7 +37,7 @@ async function main() {
   await db.delete(schema.images);
   await db.delete(schema.reviews);
   await db.delete(schema.screens);
-  await db.delete(schema.theaters);
+  await db.delete(schema.theatres);
   await db.delete(schema.users);
 
   // --- 2. Create Users ---
@@ -69,9 +69,9 @@ async function main() {
   const user2 = insertedUsers[1]!;
 
   // --- 3. Create Theaters ---
-  console.log("🎬 Creating theaters...");
+  console.log("🎬 Creating theatres...");
   const insertedTheaters = await db
-    .insert(schema.theaters)
+    .insert(schema.theatres)
     .values([
       {
         id: generateId(),

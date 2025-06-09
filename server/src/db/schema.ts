@@ -38,10 +38,10 @@ export const usersRelations = relations(users, ({ many }) => ({
 }));
 
 // -----------------------------------------------------------------------------
-// 2. THEATERS TABLE
-// Stores information about each movie theater location.
+// 2. THEATRES TABLE
+// Stores information about each movie theatre location.
 // -----------------------------------------------------------------------------
-export const theaters = sqliteTable("theaters", {
+export const theatres = sqliteTable("theatres", {
   id: text("id")
     .primaryKey()
     .$defaultFn(() => {
@@ -58,14 +58,14 @@ export const theaters = sqliteTable("theaters", {
     .default(sql`CURRENT_TIMESTAMP`),
 });
 
-export const theatersRelations = relations(theaters, ({ many }) => ({
-  screens: many(screens), // A theater has many screens
-  reviews: many(reviews), // A theater has many reviews
+export const theatersRelations = relations(theatres, ({ many }) => ({
+  screens: many(screens), // A theatre has many screens
+  reviews: many(reviews), // A theatre has many reviews
 }));
 
 // -----------------------------------------------------------------------------
 // 3. SCREENS TABLE (Auditoriums)
-// Each theater has multiple screens/auditoriums.
+// Each theatre has multiple screens/auditoriums.
 // -----------------------------------------------------------------------------
 export const screens = sqliteTable("screens", {
   id: text("id")
@@ -77,7 +77,7 @@ export const screens = sqliteTable("screens", {
     }),
   theaterId: text("theater_id")
     .notNull()
-    .references(() => theaters.id, { onDelete: "cascade" }), // Link to theaters table
+    .references(() => theatres.id, { onDelete: "cascade" }), // Link to theatres table
   name: text("name").notNull(), // e.g., "Auditorium 7", "IMAX with Laser"
   screenType: text("screen_type", {
     enum: ["Digital", "Laser", "Dolby", "IMAX"],
@@ -87,9 +87,9 @@ export const screens = sqliteTable("screens", {
 });
 
 export const screensRelations = relations(screens, ({ one, many }) => ({
-  theater: one(theaters, {
+  theatre: one(theatres, {
     fields: [screens.theaterId],
-    references: [theaters.id],
+    references: [theatres.id],
   }),
   reviews: many(reviews), // A screen has many reviews
 }));
@@ -111,7 +111,7 @@ export const reviews = sqliteTable("reviews", {
     .references(() => users.id, { onDelete: "cascade" }), // Link to users table
   theaterId: text("theater_id")
     .notNull()
-    .references(() => theaters.id, { onDelete: "cascade" }), // Link to theaters table
+    .references(() => theatres.id, { onDelete: "cascade" }), // Link to theatres table
   screenId: text("screen_id")
     .notNull()
     .references(() => screens.id, { onDelete: "cascade" }), // Link to screens table
@@ -141,9 +141,9 @@ export const reviewsRelations = relations(reviews, ({ one, many }) => ({
     fields: [reviews.userId],
     references: [users.id],
   }),
-  theater: one(theaters, {
+  theatre: one(theatres, {
     fields: [reviews.theaterId],
-    references: [theaters.id],
+    references: [theatres.id],
   }),
   screen: one(screens, {
     fields: [reviews.screenId],

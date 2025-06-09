@@ -3,6 +3,7 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { db } from "./db/index.js";
 import * as schema from "./db/schema.js";
+import { eq } from "drizzle-orm";
 
 const app = new Hono();
 
@@ -21,9 +22,29 @@ app.use(
   })
 );
 
-// Simple root route for testing
-app.get("/", c => {
-  return c.text("Hono API is running!");
+app.get("/api/theatres", async c => {
+  const theatres = await db
+    .select({
+      id: schema.theatres.id,
+      name: schema.theatres.name,
+      city: schema.theatres.city,
+      state: schema.theatres.state,
+    })
+    .from(schema.theatres);
+  return c.json(theatres);
+});
+
+app.get("/api/theatres/:theatreId", async c => {
+  const { theatreId } = c.req.param();
+  const theatre = await db
+    .select({
+      name: schema.theatres.name,
+      city: schema.theatres.city,
+      state: schema.theatres.state,
+    })
+    .from(schema.theatres)
+    .where(eq(schema.theatres.id, theatreId));
+  return c.json(theatre);
 });
 
 app.get("/api/screens", async c => {
