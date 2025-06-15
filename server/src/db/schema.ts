@@ -35,7 +35,7 @@ export const theatres = sqliteTable("theatres", {
     .default(sql`CURRENT_TIMESTAMP`),
 });
 
-export const theatersRelations = relations(theatres, ({ many }) => ({
+export const theatresRelations = relations(theatres, ({ many }) => ({
   screens: many(screens), // A theatre has many screens
   reviews: many(reviews), // A theatre has many reviews
 }));
@@ -46,7 +46,7 @@ export const theatersRelations = relations(theatres, ({ many }) => ({
 // -----------------------------------------------------------------------------
 export const screens = sqliteTable("screens", {
   id: integer("id", { mode: "number" }).primaryKey(),
-  theaterId: integer("theater_id")
+  theatreId: integer("theatre_id")
     .notNull()
     .references(() => theatres.id, { onDelete: "cascade" }), // Link to theatres table
   name: text("name").notNull(), // e.g., "Auditorium 7", "IMAX with Laser"
@@ -55,11 +55,12 @@ export const screens = sqliteTable("screens", {
   })
     .notNull()
     .default("Laser"),
+  theatreChain: text("theatre_chain"),
 });
 
 export const screensRelations = relations(screens, ({ one, many }) => ({
   theatre: one(theatres, {
-    fields: [screens.theaterId],
+    fields: [screens.theatreId],
     references: [theatres.id],
   }),
   reviews: many(reviews), // A screen has many reviews
@@ -74,7 +75,7 @@ export const reviews = sqliteTable("reviews", {
   userId: integer("user_id")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }), // Link to users table
-  theaterId: integer("theater_id")
+  theatreId: integer("theatre_id")
     .notNull()
     .references(() => theatres.id, { onDelete: "cascade" }), // Link to theatres table
   screenId: integer("screen_id")
@@ -85,15 +86,8 @@ export const reviews = sqliteTable("reviews", {
   seatRow: text("seat_row").notNull(), // e.g., "G"
   seatNumber: integer("seat_number").notNull(), // e.g., 12
 
-  // The actual review content
-  title: text("title").notNull(), // e.g., "Perfect center view, but legroom is tight"
-  body: text("body"),
-
-  // Ratings (1-5 scale)
-  viewRating: integer("view_rating").notNull(),
-  comfortRating: integer("comfort_rating").notNull(),
-  soundRating: integer("sound_rating").notNull(),
-  overallRating: integer("overall_rating").notNull(), // Can be calculated or user-provided
+  notes: text("notes"),
+  liked: text("liked", { enum: ["yes", "no"] }),
 
   createdAt: text("created_at")
     .notNull()
@@ -107,7 +101,7 @@ export const reviewsRelations = relations(reviews, ({ one, many }) => ({
     references: [users.id],
   }),
   theatre: one(theatres, {
-    fields: [reviews.theaterId],
+    fields: [reviews.theatreId],
     references: [theatres.id],
   }),
   screen: one(screens, {

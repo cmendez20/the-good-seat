@@ -96,19 +96,22 @@ async function main() {
     .insert(schema.screens)
     .values([
       {
-        theaterId: theater1.id,
-        name: "Auditorium 1 (Dolby Cinema)",
+        theatreId: theater1.id,
+        name: "Auditorium 1",
         screenType: "Dolby",
+        theatreChain: "AMC",
       },
       {
-        theaterId: theater1.id,
-        name: "Auditorium 2 (Digital)",
+        theatreId: theater1.id,
+        name: "Auditorium 2",
         screenType: "Digital",
+        theatreChain: "Cinemark",
       },
       {
-        theaterId: theater2.id,
-        name: "IMAX with Laser",
+        theatreId: theater2.id,
+        name: "Auditorium 3",
         screenType: "IMAX",
+        theatreChain: "Regal",
       },
     ])
     .returning();
@@ -133,42 +136,33 @@ async function main() {
     .values([
       {
         userId: user1.id,
-        theaterId: theater1.id,
+        theatreId: theater1.id,
         screenId: screen1_t1.id,
         seatRow: "J",
         seatNumber: 15,
-        title: "Perfect View, Dolby Sound Amazing!",
-        body: "Sitting in row J, seat 15, the view was absolutely pristine. Perfectly centered, no neck strain. The Dolby sound was immersive, and the seats themselves were plush recliners. Highly recommend this spot for a premium experience.",
-        viewRating: 5,
-        comfortRating: 5,
-        soundRating: 5,
-        overallRating: 5,
+        notes:
+          "Sitting in row J, seat 15, the view was absolutely pristine. Perfectly centered, no neck strain. The Dolby sound was immersive, and the seats themselves were plush recliners. Highly recommend this spot for a premium experience.",
+        liked: "yes",
       },
       {
         userId: user2.id,
-        theaterId: theater1.id,
+        theatreId: theater1.id,
         screenId: screen2_t1.id,
         seatRow: "C",
         seatNumber: 7,
-        title: "Too close to screen, average comfort.",
-        body: "Row C is definitely too close for this standard screen. Had to look up constantly. Seats were just okay, not terrible but not great for a long movie. Sound was decent.",
-        viewRating: 2,
-        comfortRating: 3,
-        soundRating: 4,
-        overallRating: 3,
+        notes:
+          "Row C is definitely too close for this standard screen. Had to look up constantly. Seats were just okay, not terrible but not great for a long movie. Sound was decent.",
+        liked: "no",
       },
       {
         userId: user1.id,
-        theaterId: theater2.id,
+        theatreId: theater2.id,
         screenId: screen1_t2.id,
         seatRow: "F",
         seatNumber: 10,
-        title: "IMAX Sweet Spot, but seat needs repair.",
-        body: "Row F, seat 10 in the IMAX was fantastic for the screen size – perfectly fills your vision. Sound was powerful. However, my seat's recline function was broken, which was a shame.",
-        viewRating: 5,
-        comfortRating: 3,
-        soundRating: 5,
-        overallRating: 4,
+        notes:
+          "Row F, seat 10 in the IMAX was fantastic for the screen size – perfectly fills your vision. Sound was powerful. However, my seat's recline function was broken, which was a shame.",
+        liked: "yes",
       },
     ])
     .returning();

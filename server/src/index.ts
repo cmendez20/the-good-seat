@@ -67,16 +67,11 @@ app.get("/api/reviews/:theatreId", async c => {
       screenType: schema.screens.screenType,
       seatRow: schema.reviews.seatRow,
       seatNum: schema.reviews.seatNumber,
-      title: schema.reviews.title,
-      body: schema.reviews.body,
-      viewRating: schema.reviews.viewRating,
-      comfortRating: schema.reviews.comfortRating,
-      soundRating: schema.reviews.soundRating,
       timestamp: schema.reviews.createdAt,
     })
     .from(schema.reviews)
     .leftJoin(schema.screens, eq(schema.reviews.screenId, schema.screens.id))
-    .where(eq(schema.reviews.theaterId, parseInt(theatreId)));
+    .where(eq(schema.reviews.theatreId, parseInt(theatreId)));
 
   return c.json(reviews);
 });

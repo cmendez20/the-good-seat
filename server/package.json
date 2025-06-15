@@ -7,7 +7,7 @@
     "dev": "tsx watch --env-file=.env src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "migrate": "tsx src/db/migrate.ts",
+    "db:migrate": "tsx src/db/migrate.ts",
     "db:gen": "drizzle-kit generate",
     "db:push": "drizzle-kit push"
   },
