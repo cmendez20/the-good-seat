@@ -1,7 +1,6 @@
 import { drizzle } from "drizzle-orm/libsql";
 import { createClient } from "@libsql/client";
 import { hash } from "bcryptjs";
-import Sqids from "sqids";
 import * as schema from "./schema.js";
 
 // Validate that the required environment variables are set
@@ -16,17 +15,6 @@ const client = createClient({
 
 // Pass the libsql client to Drizzle
 export const db = drizzle(client, { schema });
-
-// --- ID Generation (Using Sqids as discussed) ---
-// Ensure your .env has a SQIDS_SALT for consistent ID generation
-const sqids = new Sqids({
-  minLength: 8,
-});
-
-const generateId = () => {
-  const randomNum = Math.floor(Math.random() * 1_000_000_000_000);
-  return sqids.encode([randomNum]);
-};
 
 async function main() {
   console.log("🌱 Starting database seeding...");
@@ -49,14 +37,12 @@ async function main() {
     .insert(schema.users)
     .values([
       {
-        id: generateId(),
         username: "cinemacritic",
         email: "critic@example.com",
         hashedPassword: hashedPassword1,
         avatarUrl: "https://i.pravatar.cc/150?img=68",
       },
       {
-        id: generateId(),
         username: "seatseeker",
         email: "seeker@example.com",
         hashedPassword: hashedPassword2,
@@ -65,8 +51,14 @@ async function main() {
     ])
     .returning(); // .returning() gets the inserted data back
 
-  const user1 = insertedUsers[0]!;
-  const user2 = insertedUsers[1]!;
+  const user1 = {
+    ...insertedUsers[0]!,
+    id: Number(insertedUsers[0]!.id),
+  };
+  const user2 = {
+    ...insertedUsers[1]!,
+    id: Number(insertedUsers[1]!.id),
+  };
 
   // --- 3. Create Theaters ---
   console.log("🎬 Creating theatres...");
@@ -74,14 +66,12 @@ async function main() {
     .insert(schema.theatres)
     .values([
       {
-        id: generateId(),
         name: "Grand Palace Cinemas",
         city: "Metropolis",
         state: "NY",
         country: "USA",
       },
       {
-        id: generateId(),
         name: "The Odeon Multiplex",
         city: "Gotham",
         state: "NY",
@@ -90,8 +80,15 @@ async function main() {
     ])
     .returning();
 
-  const theater1 = insertedTheaters[0]!;
-  const theater2 = insertedTheaters[1]!;
+  const theater1 = {
+    ...insertedTheaters[0]!,
+    id: Number(insertedTheaters[0]!.id),
+  };
+  const theater2 = {
+    ...insertedTheaters[1]!,
+    id: Number(insertedTheaters[1]!.id),
+  };
+  console.log(theater1);
 
   // --- 4. Create Screens for Theaters ---
   console.log("📺 Creating screens...");
@@ -99,19 +96,16 @@ async function main() {
     .insert(schema.screens)
     .values([
       {
-        id: generateId(),
         theaterId: theater1.id,
         name: "Auditorium 1 (Dolby Cinema)",
         screenType: "Dolby",
       },
       {
-        id: generateId(),
         theaterId: theater1.id,
         name: "Auditorium 2 (Digital)",
         screenType: "Digital",
       },
       {
-        id: generateId(),
         theaterId: theater2.id,
         name: "IMAX with Laser",
         screenType: "IMAX",
@@ -119,9 +113,18 @@ async function main() {
     ])
     .returning();
 
-  const screen1_t1 = insertedScreens[0]!;
-  const screen2_t1 = insertedScreens[1]!;
-  const screen1_t2 = insertedScreens[2]!;
+  const screen1_t1 = {
+    ...insertedScreens[0]!,
+    id: Number(insertedScreens[0]!.id),
+  };
+  const screen2_t1 = {
+    ...insertedScreens[1]!,
+    id: Number(insertedScreens[1]!.id),
+  };
+  const screen1_t2 = {
+    ...insertedScreens[2]!,
+    id: Number(insertedScreens[2]!.id),
+  };
 
   // --- 5. Create Reviews ---
   console.log("✍️ Creating reviews...");
@@ -129,7 +132,6 @@ async function main() {
     .insert(schema.reviews)
     .values([
       {
-        id: generateId(),
         userId: user1.id,
         theaterId: theater1.id,
         screenId: screen1_t1.id,
@@ -143,7 +145,6 @@ async function main() {
         overallRating: 5,
       },
       {
-        id: generateId(),
         userId: user2.id,
         theaterId: theater1.id,
         screenId: screen2_t1.id,
@@ -157,7 +158,6 @@ async function main() {
         overallRating: 3,
       },
       {
-        id: generateId(),
         userId: user1.id,
         theaterId: theater2.id,
         screenId: screen1_t2.id,
@@ -173,26 +173,29 @@ async function main() {
     ])
     .returning();
 
-  const review1 = insertedReviews[0]!;
-  const review3 = insertedReviews[2]!;
+  const review1 = {
+    ...insertedReviews[0]!,
+    id: Number(insertedReviews[0]!.id),
+  };
+  const review3 = {
+    ...insertedReviews[2]!,
+    id: Number(insertedReviews[2]!.id),
+  };
 
   // --- 6. Create Images for Reviews ---
   console.log("🖼️ Creating images...");
   await db.insert(schema.images).values([
     {
-      id: generateId(),
       reviewId: review1.id,
       url: "https://images.unsplash.com/photo-1616530940864-16274431b99a?q=80&w=1080",
       altText: "View from J15 at Grand Palace",
     },
     {
-      id: generateId(),
       reviewId: review1.id,
       url: "https://images.unsplash.com/photo-1549448332-9c9dc760778c?q=80&w=1080",
       altText: "Comfortable recliner seat in Dolby",
     },
     {
-      id: generateId(),
       reviewId: review3.id,
       url: "https://images.unsplash.com/photo-1574211116238-d6103681534b?q=80&w=1080",
       altText: "IMAX screen view from middle row",

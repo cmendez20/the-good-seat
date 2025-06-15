@@ -1,7 +1,6 @@
 // server/src/db/migrate.ts
 import { migrate } from "drizzle-orm/better-sqlite3/migrator";
 import { drizzle } from "drizzle-orm/better-sqlite3";
-// CORRECTED: Import Database directly as a default export
 import Database from "better-sqlite3"; // No curly braces for default export
 import path from "path";
 import fs from "fs"; // Import fs module

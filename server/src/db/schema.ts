@@ -1,29 +1,12 @@
-import {
-  sqliteTable,
-  text,
-  integer,
-  primaryKey,
-} from "drizzle-orm/sqlite-core";
+import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
 import { relations, sql } from "drizzle-orm";
-import Sqids from "sqids";
-
-const sqids = new Sqids({
-  alphabet: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
-  minLength: 8, // Minimum length for your IDs
-});
 
 // -----------------------------------------------------------------------------
 // 1. USERS TABLE
 // Stores user information for authentication and associating reviews.
 // -----------------------------------------------------------------------------
 export const users = sqliteTable("users", {
-  id: text("id")
-    .primaryKey()
-    .$defaultFn(() => {
-      // Generate a large random number to encode
-      const randomNum = Math.floor(Math.random() * 1_000_000_000_000);
-      return sqids.encode([randomNum]); // Encode a single number into a Sqids string
-    }),
+  id: integer("id", { mode: "number" }).primaryKey(),
   username: text("username").notNull().unique(),
   email: text("email").notNull().unique(),
   hashedPassword: text("hashed_password").notNull(),
@@ -42,13 +25,7 @@ export const usersRelations = relations(users, ({ many }) => ({
 // Stores information about each movie theatre location.
 // -----------------------------------------------------------------------------
 export const theatres = sqliteTable("theatres", {
-  id: text("id")
-    .primaryKey()
-    .$defaultFn(() => {
-      // Generate a large random number to encode
-      const randomNum = Math.floor(Math.random() * 1_000_000_000_000);
-      return sqids.encode([randomNum]); // Encode a single number into a Sqids string
-    }),
+  id: integer("id", { mode: "number" }).primaryKey(),
   name: text("name").notNull(), // e.g., "AMC Metreon 16"
   city: text("city").notNull(),
   state: text("state").notNull(),
@@ -68,14 +45,8 @@ export const theatersRelations = relations(theatres, ({ many }) => ({
 // Each theatre has multiple screens/auditoriums.
 // -----------------------------------------------------------------------------
 export const screens = sqliteTable("screens", {
-  id: text("id")
-    .primaryKey()
-    .$defaultFn(() => {
-      // Generate a large random number to encode
-      const randomNum = Math.floor(Math.random() * 1_000_000_000_000);
-      return sqids.encode([randomNum]); // Encode a single number into a Sqids string
-    }),
-  theaterId: text("theater_id")
+  id: integer("id", { mode: "number" }).primaryKey(),
+  theaterId: integer("theater_id")
     .notNull()
     .references(() => theatres.id, { onDelete: "cascade" }), // Link to theatres table
   name: text("name").notNull(), // e.g., "Auditorium 7", "IMAX with Laser"
@@ -99,20 +70,14 @@ export const screensRelations = relations(screens, ({ one, many }) => ({
 // This is the core table, connecting users, seats, and ratings.
 // -----------------------------------------------------------------------------
 export const reviews = sqliteTable("reviews", {
-  id: text("id")
-    .primaryKey()
-    .$defaultFn(() => {
-      // Generate a large random number to encode
-      const randomNum = Math.floor(Math.random() * 1_000_000_000_000);
-      return sqids.encode([randomNum]); // Encode a single number into a Sqids string
-    }),
-  userId: text("user_id")
+  id: integer("id", { mode: "number" }).primaryKey(),
+  userId: integer("user_id")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }), // Link to users table
-  theaterId: text("theater_id")
+  theaterId: integer("theater_id")
     .notNull()
     .references(() => theatres.id, { onDelete: "cascade" }), // Link to theatres table
-  screenId: text("screen_id")
+  screenId: integer("screen_id")
     .notNull()
     .references(() => screens.id, { onDelete: "cascade" }), // Link to screens table
 
@@ -157,14 +122,8 @@ export const reviewsRelations = relations(reviews, ({ one, many }) => ({
 // Stores URLs for the images associated with each review.
 // -----------------------------------------------------------------------------
 export const images = sqliteTable("images", {
-  id: text("id")
-    .primaryKey()
-    .$defaultFn(() => {
-      // Generate a large random number to encode
-      const randomNum = Math.floor(Math.random() * 1_000_000_000_000);
-      return sqids.encode([randomNum]); // Encode a single number into a Sqids string
-    }),
-  reviewId: text("review_id")
+  id: integer("id", { mode: "number" }).primaryKey(),
+  reviewId: integer("review_id")
     .notNull()
     .references(() => reviews.id, { onDelete: "cascade" }), // Link to reviews table
   url: text("url").notNull(), // URL from your cloud storage (e.g., Cloudflare R2, S3)
