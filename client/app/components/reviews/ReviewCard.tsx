@@ -1,23 +1,24 @@
-const ReviewCard = ({ review }) => {
-  return (
-    <div className="p-4 bg-slate-200 mb-6 rounded-xl text-black relative">
-      <p className="font-bold mb-2">
-        {review.title} ({review.screenType})
-      </p>
-      <p className="mb-2">{review.body}</p>
-      <div className="mb-6">
-        <p>View: {review.viewRating}</p>
-        <p>Comfort: {review.comfortRating}</p>
-        <p>Sound: {review.soundRating}</p>
-      </div>
+import type { Review } from "~/types/types";
 
-      <p className="absolute bottom-0">
-        🪑 {review.seatRow}
-        {review.seatNum}
+type ReviewProps = { review: Review };
+
+const ReviewCard = ({ review }: ReviewProps) => {
+  console.log(review);
+  return (
+    <div className="p-4 bg-slate-700 mb-8 rounded-xl text-shadow-white relative">
+      <p className="mb-4 text-xl">
+        {review.screenName} (<span className="italic">{review.screenType}</span>
+        )
       </p>
-      <p className="absolute right-5 bottom-0">
-        Auditorium {review.screenName}
-      </p>
+      <p className="mb-4">{review.notes}</p>
+
+      <div className="flex justify-between max-w-48 mx-auto">
+        <p className="font-bold tracking-wider">
+          🪑 {review.seatRow}
+          {review.seatNum}
+        </p>
+        <p>{review.liked === "yes" ? "😁" : "😡"}</p>
+      </div>
     </div>
   );
 };
