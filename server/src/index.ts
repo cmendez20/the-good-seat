@@ -67,6 +67,8 @@ app.get("/api/reviews/:theatreId", async c => {
       screenType: schema.screens.screenType,
       seatRow: schema.reviews.seatRow,
       seatNum: schema.reviews.seatNumber,
+      notes: schema.reviews.notes,
+      liked: schema.reviews.liked,
       timestamp: schema.reviews.createdAt,
     })
     .from(schema.reviews)
