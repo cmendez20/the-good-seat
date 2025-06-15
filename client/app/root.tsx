@@ -10,14 +10,9 @@ import {
 import type { Route } from "./+types/root";
 import "./app.css";
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
 export function HydrateFallback() {
   return <div>Loading Theatre Details...</div>;
 }
-
-// Create a client
-const queryClient = new QueryClient();
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -51,11 +46,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <Outlet />
-    </QueryClientProvider>
-  );
+  return <Outlet />;
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
