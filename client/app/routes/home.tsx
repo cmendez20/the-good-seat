@@ -38,20 +38,21 @@ export default function Home({ loaderData }: Route.ComponentProps) {
   return (
     <div className="max-w-sm m-auto py-8 px-4">
       <h1 className="text-5xl font-bold mb-8 text-center">The Good Seat</h1>
-      <ul>
-        {theatres.map((theatre: Theatre) => {
-          return (
-            <div className="mb-8 bg-gray-800 text-shadow-white rounded-md p-4 last:mb-16 hover:bg-slate-500 hover:transition-all hover:-translate-y-0.5">
-              <li key={theatre.id}>
-                <Link to={`theatres/${theatre.id}`}>{theatre.name}</Link>
-                <p className="text-sm italic">
-                  {theatre.city}, {theatre.state}
-                </p>
-              </li>
+      {theatres.map((theatre: Theatre) => {
+        return (
+          <Link
+            to={`theatres/${theatre.id}`}
+            className="mb-8 block bg-gray-800 text-shadow-white rounded-md p-4 last:mb-16 hover:bg-gray-600 hover:transition-all hover:-translate-y-0.5"
+          >
+            <div key={theatre.id}>
+              <p>{theatre.name}</p>
+              <p className="text-sm italic">
+                {theatre.city}, {theatre.state}
+              </p>
             </div>
-          );
-        })}
-      </ul>
+          </Link>
+        );
+      })}
 
       <h2 className="text-2xl font-bold mb-4 text-center">Add new Review</h2>
       {/* 

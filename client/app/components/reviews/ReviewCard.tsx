@@ -5,7 +5,7 @@ type ReviewProps = { review: Review };
 const ReviewCard = ({ review }: ReviewProps) => {
   console.log(review);
   return (
-    <div className="p-4 bg-slate-700 mb-8 rounded-xl text-shadow-white relative">
+    <div className="p-4 bg-gray-800 mb-8 rounded-xl text-shadow-white relative">
       <p className="mb-4 text-xl">
         {review.screenName} (<span className="italic">{review.screenType}</span>
         )
