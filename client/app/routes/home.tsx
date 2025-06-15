@@ -1,5 +1,6 @@
 import type { Route } from "./+types/home";
 import { Form, Link } from "react-router";
+import type { Theatre } from "~/types/types";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -36,11 +37,11 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 
   return (
     <div className="max-w-sm m-auto py-8 px-4">
-      <h1 className="text-4xl font-bold mb-4 text-center">The Good Seat</h1>
+      <h1 className="text-5xl font-bold mb-8 text-center">The Good Seat</h1>
       <ul>
-        {theatres.map(theatre => {
+        {theatres.map((theatre: Theatre) => {
           return (
-            <div className="mb-4 bg-gray-800 text-shadow-white rounded-md p-4 hover:bg-slate-500 hover:transition-all hover:-translate-y-0.5">
+            <div className="mb-8 bg-gray-800 text-shadow-white rounded-md p-4 last:mb-16 hover:bg-slate-500 hover:transition-all hover:-translate-y-0.5">
               <li key={theatre.id}>
                 <Link to={`theatres/${theatre.id}`}>{theatre.name}</Link>
                 <p className="text-sm italic">
