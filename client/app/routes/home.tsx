@@ -70,14 +70,14 @@ export default function Home({ loaderData }: Route.ComponentProps) {
         <input
           type="text"
           name="theatre_name"
-          className="bg-amber-50 rounded py-1 px-2 text-black"
+          className="bg-gray-50 rounded py-1 px-2 text-black"
           placeholder="Theatre Name"
         />
         <input
           type="text"
-          name="theatre_name"
-          className="bg-amber-50 rounded py-1 px-2 text-black"
-          placeholder="Theatre Name"
+          name="screen_type"
+          className="bg-gray-50 rounded py-1 px-2 text-black"
+          placeholder="Screen Type"
         />
         <button
           type="submit"
