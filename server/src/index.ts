@@ -43,7 +43,7 @@ app.get("/api/theatres/:theatreId", async c => {
       state: schema.theatres.state,
     })
     .from(schema.theatres)
-    .where(eq(schema.theatres.id, theatreId));
+    .where(eq(schema.theatres.id, parseInt(theatreId)));
   return c.json(theatre);
 });
 
@@ -56,6 +56,29 @@ app.get("/api/screens", async c => {
     .from(schema.screens);
 
   return c.json(screens);
+});
+
+app.get("/api/reviews/:theatreId", async c => {
+  const { theatreId } = c.req.param();
+  const reviews = await db
+    .select({
+      screenId: schema.reviews.screenId,
+      screenName: schema.screens.name,
+      screenType: schema.screens.screenType,
+      seatRow: schema.reviews.seatRow,
+      seatNum: schema.reviews.seatNumber,
+      title: schema.reviews.title,
+      body: schema.reviews.body,
+      viewRating: schema.reviews.viewRating,
+      comfortRating: schema.reviews.comfortRating,
+      soundRating: schema.reviews.soundRating,
+      timestamp: schema.reviews.createdAt,
+    })
+    .from(schema.reviews)
+    .leftJoin(schema.screens, eq(schema.reviews.screenId, schema.screens.id))
+    .where(eq(schema.reviews.theaterId, parseInt(theatreId)));
+
+  return c.json(reviews);
 });
 
 // --- Start the Server ---
