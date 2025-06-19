@@ -22,7 +22,7 @@ export default function ReviewForm() {
         <input
           id="theatre-name"
           type="text"
-          name="theatre_name"
+          name="theatreName"
           className="bg-gray-50 rounded py-1 px-2 text-black"
           placeholder="Theatre Name"
         />
